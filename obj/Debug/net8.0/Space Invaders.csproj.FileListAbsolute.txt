@@ -1,0 +1,14 @@
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\bin\Debug\net8.0\Space Invaders.exe
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\bin\Debug\net8.0\Space Invaders.deps.json
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\bin\Debug\net8.0\Space Invaders.runtimeconfig.json
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\bin\Debug\net8.0\Space Invaders.dll
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\bin\Debug\net8.0\Space Invaders.pdb
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\Space Invaders.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\Space Invaders.AssemblyInfoInputs.cache
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\Space Invaders.AssemblyInfo.cs
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\Space Invaders.csproj.CoreCompileInputs.cache
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\Space Invaders.dll
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\refint\Space Invaders.dll
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\Space Invaders.pdb
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\Space Invaders.genruntimeconfig.cache
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\ref\Space Invaders.dll
