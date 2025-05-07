@@ -149,7 +149,7 @@ class Program
                         }
                     }
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(board.random.Next(400, 750));
             }
         }
     }
@@ -244,7 +244,7 @@ class Program
         while (true)
         {
             board.DrawBoard();
-            Thread.Sleep(1);
+            Thread.Sleep(15);
         }
     }
 }
