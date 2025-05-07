@@ -12,3 +12,4 @@ C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\ref
 C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\Space Invaders.pdb
 C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\Space Invaders.genruntimeconfig.cache
 C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\ref\Space Invaders.dll
+C:\Users\ShuKu\source\repos\games_in_console\Space Invaders\obj\Debug\net8.0\Space Invaders.sourcelink.json

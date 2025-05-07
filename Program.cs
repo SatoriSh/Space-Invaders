@@ -1,5 +1,6 @@
 ﻿using System;
 using static Program;
+using static Program.Cell;
 
 class Program
 {
@@ -62,7 +63,10 @@ class Program
         }
 
         internal string? view;
+
         internal int enemyHealth;
+
+        internal int playerHealth;
 
         internal CellType? cellType;
 
@@ -97,49 +101,127 @@ class Program
 
     class Enemy : Cell
     {
-        public Enemy() : base(CellType.enemy) { }
+        private Board board;
 
-        public void EnemyControl(Board board)
+        public Enemy(Board board) : base(CellType.enemy)
         {
-            for (int i = 0; i < board.height; i++)
+            this.board = board;
+        }
+
+        public void EnemyControl()
+        {
+            while (true)
             {
-                for (int j = 0; j < board.width; j++)
+                for (int i = 0; i < board.height; i++)
                 {
-                    if (board.Cells[i, j].cellType == CellType.enemy)
+                    for (int j = 0; j < board.width; j++)
                     {
-                        if (board.random.Next(1, 101) >= 50)
+                        if (board.Cells[i, j].cellType == CellType.enemy)
                         {
-                            if (j > (board.width - board.width) + 2)
+                            if (board.random.Next(1, 101) >= 50)
                             {
-                                if (board.Cells[i, j - 1].cellType == CellType.invisible && board.Cells[i, j - 2].cellType == CellType.invisible)
+                                if (j > (board.width - board.width) + 2)
                                 {
-                                    board.Cells[i, j].cellType = CellType.invisible;
-                                    board.Cells[i, j].initializeView(CellType.invisible);
-                                    board.Cells[i, j - 1].cellType = CellType.enemy;
-                                    board.Cells[i, j - 1].enemyHealth = board.Cells[i, j].enemyHealth;
-                                    board.Cells[i, j - 1].initializeView(CellType.enemy);
+                                    if (board.Cells[i, j - 1].cellType == CellType.invisible && board.Cells[i, j - 2].cellType == CellType.invisible)
+                                    {
+                                        board.Cells[i, j].cellType = CellType.invisible;
+                                        board.Cells[i, j].initializeView(CellType.invisible);
+                                        board.Cells[i, j - 1].cellType = CellType.enemy;
+                                        board.Cells[i, j - 1].enemyHealth = board.Cells[i, j].enemyHealth;
+                                        board.Cells[i, j - 1].initializeView(CellType.enemy);
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            if (j < board.width - 2)
+                            else
                             {
-                                if (board.Cells[i, j + 1].cellType == CellType.invisible && board.Cells[i, j + 2].cellType == CellType.invisible)
+                                if (j < board.width - 2)
                                 {
-                                    board.Cells[i, j].cellType = CellType.invisible;
-                                    board.Cells[i, j].initializeView(CellType.invisible);
-                                    board.Cells[i, j + 1].cellType = CellType.enemy;
-                                    board.Cells[i, j + 1].enemyHealth = board.Cells[i, j].enemyHealth;
-                                    board.Cells[i, j + 1].initializeView(CellType.enemy);
+                                    if (board.Cells[i, j + 1].cellType == CellType.invisible && board.Cells[i, j + 2].cellType == CellType.invisible)
+                                    {
+                                        board.Cells[i, j].cellType = CellType.invisible;
+                                        board.Cells[i, j].initializeView(CellType.invisible);
+                                        board.Cells[i, j + 1].cellType = CellType.enemy;
+                                        board.Cells[i, j + 1].enemyHealth = board.Cells[i, j].enemyHealth;
+                                        board.Cells[i, j + 1].initializeView(CellType.enemy);
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                Thread.Sleep(500);
+            }
+        }
+    }
+
+    class Player
+    {
+        private Board board;
+
+        private int playerX;
+        private int playerY;
+
+        public Player(Board board)
+        {
+            this.board = board;
+        }
+
+        internal void PlayerControl()
+        {
+            while (true)
+            {
+                if (Console.KeyAvailable)
+                {
+                    LocatePlayer();
+                    var key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.RightArrow)
+                    {
+                        PlayerMove("right");
+                    }
+                    if (key.Key == ConsoleKey.LeftArrow)
+                    {
+                        PlayerMove("left");
+                    }
+                }
             }
         }
 
+        private void LocatePlayer()
+        {
+            for (int i = 0; i < board.height; i++)
+            {
+                for (int j = 0; j < board.width; j++)
+                {
+                    if (board.Cells[i, j].cellType == CellType.player)
+                    {
+                        playerX = i;
+                        playerY = j;
+                    }
+                }
+            }
+        }
+
+        private void PlayerMove(string direction)
+        {
+            if (direction == "right" && playerY < board.width - 1)
+            {
+                board.Cells[playerX, playerY].cellType = CellType.invisible;
+                board.Cells[playerX, playerY].initializeView(CellType.invisible);
+
+                board.Cells[playerX, playerY + 1].cellType = CellType.player;
+                board.Cells[playerX, playerY + 1].playerHealth = board.Cells[playerX, playerY].playerHealth;
+                board.Cells[playerX, playerY + 1].initializeView(CellType.player);
+            }
+            else if (direction == "left" && playerY != 0)
+            {
+                board.Cells[playerX, playerY].cellType = CellType.invisible;
+                board.Cells[playerX, playerY].initializeView(CellType.invisible);
+
+                board.Cells[playerX, playerY - 1].cellType = CellType.player;
+                board.Cells[playerX, playerY - 1].playerHealth = board.Cells[playerX, playerY].playerHealth;
+                board.Cells[playerX, playerY - 1].initializeView(CellType.player);
+            }
+        }
     }
 
     static void Main(string[] args)
@@ -149,15 +231,20 @@ class Program
         Console.CursorVisible = false;
 
         Board board = new Board(10, 21, 4.5f);
-        Enemy enemy = new Enemy();
-
         board.CellsInitialize();
+
+        Enemy enemy = new Enemy(board);
+        Player player = new Player(board);
+
+        Thread t1 = new Thread(player.PlayerControl);
+        Thread t2 = new Thread(enemy.EnemyControl);
+        t1.Start();
+        t2.Start();
 
         while (true)
         {
             board.DrawBoard();
-            Thread.Sleep(550);
-            enemy.EnemyControl(board);
+            Thread.Sleep(1);
         }
     }
 }
