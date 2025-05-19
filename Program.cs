@@ -243,6 +243,9 @@ class Program
         private int playerX;
         private int playerY;
 
+        private bool _canShoot = true;
+        private int _fireRate = 500; // 0.5ms
+
         public Player(Board board)
         {
             this.board = board;
@@ -278,26 +281,6 @@ class Program
                 }
             }
         }
-
-        //internal void PlayerShootingSpeedLmit()
-        //{
-        //    while (true)
-        //    {
-                
-        //        if (Console.KeyAvailable)
-        //        {
-        //            var key = Console.ReadKey(true);
-
-        //            if (key.Key == ConsoleKey.Spacebar)
-        //            {
-        //                LocatePlayer();
-        //                PlayerShoot();
-        //                Thread.Sleep(500);
-        //            }
-        //        }
-                
-        //    }
-        //}
 
         private void LocatePlayer()
         {
@@ -336,10 +319,18 @@ class Program
             }
         }
 
-        private void PlayerShoot()
+        private async void PlayerShoot()
         {
+            if (!_canShoot) return;
+
+            _canShoot = false;
+
             board.Cells[playerX - 1, playerY].cellType = CellType.playerBullet;
             board.Cells[playerX - 1, playerY].initializeView(CellType.playerBullet);
+
+            await Task.Delay(_fireRate);
+
+            _canShoot = true;
         }
     }
 
