@@ -93,7 +93,9 @@ class Program
             invisible,
             enemy,
             player,
-            explosion
+            explosion,
+            playerBullet,
+            enemyBullet
         }
 
         internal string? view;
@@ -127,6 +129,12 @@ class Program
                     break;
                 case CellType.explosion:
                     view = "💥";
+                    break;
+                case CellType.playerBullet:
+                    view = "🔹"; // blue bullet
+                    break;
+                case CellType.enemyBullet:
+                    view = "🔸"; // red bullet
                     break;
                 default:
                     view = "  ";
@@ -193,12 +201,50 @@ class Program
         }
     }
 
+    class Bullet
+    {
+        private Board board;
+
+        public Bullet(Board board)
+        {
+            this.board = board;
+        }
+
+        internal void PlayerBulletControl()
+        {
+            while (true)
+            {
+                for (int i = 0; i < board.height; i++)
+                {
+                    for (int j = 0; j < board.width; j++)
+                    {
+                        if (board.Cells[i, j].cellType == CellType.playerBullet)
+                        {
+                            board.Cells[i, j].cellType = CellType.invisible;
+                            board.Cells[i, j].initializeView(CellType.invisible);
+
+                            if (i > 0)
+                            {
+                                board.Cells[i - 1, j].cellType = CellType.playerBullet;
+                                board.Cells[i - 1, j].initializeView(CellType.playerBullet);
+                            }
+                        }
+                    }
+                }
+                Thread.Sleep(200);
+            }
+        }
+    }
+
     class Player
     {
         private Board board;
 
         private int playerX;
         private int playerY;
+
+        private bool _canShoot = true;
+        private int _fireRate = 500; // 0.5ms
 
         public Player(Board board)
         {
@@ -226,6 +272,11 @@ class Program
                     if (key.Key == ConsoleKey.Escape)
                     {
                         Environment.Exit(0);
+                    }
+
+                    if (key.Key == ConsoleKey.Spacebar)
+                    {
+                        PlayerShoot();
                     }
                 }
             }
@@ -267,6 +318,20 @@ class Program
                 board.Cells[playerX, playerY - 1].initializeView(CellType.player);
             }
         }
+
+        private async void PlayerShoot()
+        {
+            if (!_canShoot) return;
+
+            _canShoot = false;
+
+            board.Cells[playerX - 1, playerY].cellType = CellType.playerBullet;
+            board.Cells[playerX - 1, playerY].initializeView(CellType.playerBullet);
+
+            await Task.Delay(_fireRate);
+
+            _canShoot = true;
+        }
     }
 
     static void Main(string[] args)
@@ -280,11 +345,15 @@ class Program
 
         Enemy enemy = new Enemy(board);
         Player player = new Player(board);
+        Bullet bullet = new Bullet(board);
 
         Thread t1 = new Thread(player.PlayerControl);
         Thread t2 = new Thread(enemy.EnemyControl);
+        Thread t3 = new Thread(bullet.PlayerBulletControl);
+        
         t1.Start();
         t2.Start();
+        t3.Start();
 
         while (true)
         {
